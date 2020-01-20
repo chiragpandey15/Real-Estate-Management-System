@@ -1,4 +1,4 @@
-<?php
+ <?php
 	
 	
 	session_start();
@@ -17,12 +17,12 @@
 				$query = "SELECT * FROM `customer` WHERE `email` = '".mysqli_real_escape_string($link, $_POST['email'])."' LIMIT 1";
 				
 				$result=mysqli_query($link,$query);
+				$row=mysqli_fetch_array($result);
 				if(mysqli_num_rows($result)){
 					echo '<p style="color: red; font-weight: bolder;" align="center">Email address is already taken</p>';
 				}
 				else
 				{
-					
 					$query="INSERT into `customer`(`name`,`email`,`password`,`phone_number`) values ('".mysqli_real_escape_string($link, $_POST['name'])."','".mysqli_real_escape_string($link, $_POST['email'])."','".mysqli_real_escape_string($link, $_POST['password'])."','".mysqli_real_escape_string($link, $_POST['num'])."')";	
 					if(!mysqli_query($link,$query))
 					{
@@ -105,7 +105,7 @@
 	</div>
     
 <?php include("footer.php"); ?>
-
+ 
 
 
 
