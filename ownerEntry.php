@@ -2,7 +2,6 @@
 	
 	
 	session_start();
-	
 	if(array_key_exists("submit", $_POST))
 	{
 		include("connection.php");
