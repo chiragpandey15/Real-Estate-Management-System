@@ -1,4 +1,4 @@
-<?php
+ <?php
 	session_start();
 	
 	include("header.php");
@@ -8,70 +8,34 @@
 	$query = "SELECT * FROM `customer` WHERE `id` = '".mysqli_real_escape_string($link, $_SESSION['id'])."'";
 	$result=mysqli_query($link,$query);
 	$row=mysqli_fetch_array($result);	
-	$name=$row['NAME'];
-	$email=$row['EMAIL'];	
-	$number=$row['PHONE_NUMBER'];
-	echo 'Name: '; echo $name; echo "<br>";
-	echo 'Email: '; echo $email; echo "<br>";
-	echo 'PHONE NUMBER: '; echo $number; echo "<br>";
+	$name=$row['name'];
+	$email=$row['email'];	
+	$number=$row['phone_number'];
+	echo '<div class="Right">Welcome '; echo $name; echo "<br></div>";
+
 	
 	
-	$query = "SELECT `address`,`price`,`ROOM_DESCRIPTION` FROM `rooms`,`booked` WHERE ID=R_ID AND C_ID={$_SESSION['id']}  ";
-			$result=mysqli_query($link,$query);
-			
-			echo '<table class="table table-dark">
-						<thead>
-						<tr>
-				  <th scope="col">Address</th>
-				  <th scope="col">Price</th>
-				  <th scope="col">Description</th>
-				</tr>
-			  </thead>
-			  <tbody>';
-			
-			
-			
-			
-			while($row=mysqli_fetch_array($result))
+	
+	
+	
+	
+	
+	if(array_key_exists("info", $_GET))
+	{
+		$query = "SELECT `belongs_to` FROM `rooms` WHERE `R_ID`=".$_GET['ID'];
+		$result=mysqli_query($link,$query);
+		while($row=mysqli_fetch_array($result))
+		{
+			$query = "SELECT * FROM `owner` WHERE `ID`=".$row['belongs_to'];
+			$r=mysqli_query($link,$query);
+			while($info=mysqli_fetch_array($r))
 			{
-				$address=$row['address'];
-				$price=$row['price'];
-				$description=$row['ROOM_DESCRIPTION'];
-				echo '
-				<tr>
-				  
-				  <td>'.$address;
-				  echo '</td>
-				  <td>'.$price;
-				  echo '</td>
-				  <td>'.$description;
-				  echo '</td>';
-				  echo '<td><button class="btn btn-danger" name="delete" type="submit">Delete</button></td>';
-				echo '</tr>';
+				echo 'Name: '.$info['name'];
+				echo '<br> Number: '.$info['phone_number'];
+				echo '</br>';
 			}
-			echo '</tbody>
-			</table>';
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		}
+	}
 	
 	
 	
@@ -83,7 +47,7 @@
 		}
 		else
 		{
-			$query = "SELECT `id`,`address`,`price`,`ROOM_DESCRIPTION` FROM `rooms` WHERE `address` LIKE '%".mysqli_real_escape_string($link, $_POST['search'])."%' ";
+			$query = "SELECT `R_ID`,`address`,`price`,`ROOM_DESCRIPTION` FROM `rooms` WHERE `address` LIKE '%".mysqli_real_escape_string($link, $_POST['search'])."%' ";
 			$result=mysqli_query($link,$query);
 			
 			echo '<table class="table table-dark">
@@ -102,7 +66,7 @@
 			
 			while($row=mysqli_fetch_array($result))
 			{
-				$id=$row['id'];
+				$id=$row['R_ID'];
 				$address=$row['address'];
 				$price=$row['price'];
 				$description=$row['ROOM_DESCRIPTION'];
@@ -116,7 +80,7 @@
 				  echo '</td>
 				  <td>'.$description;
 				  echo '</td>';
-				  echo '<td><button class="btn btn-danger" name="delete'.$id; echo'" type="submit">Delete</button></td>';
+				  echo '<td><form><input type="hidden" name="ID" value="'.$id.'"><button class="btn btn-danger" name="info" type="submit" >Owner\'s Info</button></td></form></td>';
 				echo '</tr>';
 			}
 			echo '</tbody>
@@ -193,7 +157,7 @@
 	
 ?>
 	
-	
+ 
 	<div class ="container3">
 	<form class="" method="post" id="search">
 		<fieldset class="form-group">
@@ -206,21 +170,6 @@
 
 
 
-	<form class="form-group" method="post" id="book">
-		<fieldset class="form-group">
-			<input type="text" class="form-control-lg width" name="room_id" placeholder="Enter the Id of the room you want to book">
-		</fieldset>
-		
-		<fieldset class="form-group">
-			<input type="text" class="form-control-lg width" name="broker_id" placeholder="Enter the Id of the Broker">
-		</fieldset>
-		
-		
-		
-		<fieldset class="form-group">
-			<input type="submit" class="btn btn-lg btn-primary" name="book" value="Book">
-		</fieldset>
-	</form>
 
 
 	<fieldset class="form-group">
