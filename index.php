@@ -17,11 +17,6 @@
 		<input type="hidden"  name="signup" value="2">
 		<button type="button" class="btn btn-outline-primary" name="buy"><a href="customerEntry.php">Buy Now!</a></button>
 		</form>
-		<br>
-		<form>
-		<input type="hidden"  name="signup" value="3">
-		<button type="button" class="btn btn-outline-warning" name="broker"><a href="brokerEntry.php">Earn Now!</a></button>
-		</form>
 	</div>
 
 
