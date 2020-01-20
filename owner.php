@@ -8,27 +8,18 @@
 	$query = "SELECT * FROM `owner` WHERE `id` = '".mysqli_real_escape_string($link, $_SESSION['id'])."'";
 	$result=mysqli_query($link,$query);
 	$row=mysqli_fetch_array($result);	
-	$name=$row['NAME'];
-	$email=$row['EMAIL'];
-	$balance=$row['BALANCE'];
-	//echo "Name: ".$name;
-	//echo "  Email: ".$email;
-	
-	
-	
+	$name=$row['name'];
+	$email=$row['email'];
+	if(array_key_exists("delete", $_GET))
+	{
+		$query = "DELETE FROM rooms WHERE R_ID=".$_GET['ID'];
+		$result=mysqli_query($link,$query);
+	}
+
 	$query = "SELECT * FROM `rooms` WHERE `belongs_to` = '".mysqli_real_escape_string($link, $_SESSION['id'])."'";
 	$result=mysqli_query($link,$query);
-	
-	//echo "   Address: ".$address;
-	//echo "   Price: ".$price;
-	/*echo 'Name : <?php'.$name; echo '?>
-	</br>
-	Email: <?php'.$email; echo '?>
-	</br>
-	BALANCE: <?php'.$balance; echo '?>';*/	
-	echo 'Name: '; echo $name; echo "<br>";
-	echo 'Email: '; echo $email; echo "<br>";
-	echo 'Balance: '; echo $balance; echo "<br>";
+
+	echo '<div class="Right"> Welcome '; echo $name; echo "<br></div>";
 	
 	echo '<table class="table table-dark">
 						<thead>
@@ -40,15 +31,14 @@
 				</tr>
 			  </thead>
 			  <tbody>';
-			
-			
+					
 			
 			
 			while($row=mysqli_fetch_array($result))
 			{
-				$id=$row['ID'];
-				$address=$row['ADDRESS'];
-				$price=$row['PRICE'];
+				$id=$row['R_ID'];
+				$address=$row['address'];
+				$price=$row['price'];
 				$description=$row['ROOM_DESCRIPTION'];
 				echo '
 				<tr>
@@ -60,7 +50,7 @@
 				  echo '</td>
 				  <td>'.$description;
 				  echo '</td>';
-				  echo '<td><button class="btn btn-danger" name="delete'.$id; echo'" type="submit">Delete</button></td>';
+				  echo '<td><form><input type="hidden" name="ID" value="'.$id.'"><button class="btn btn-danger" name="delete" type="submit" >Delete</button></td></form></td>';
 				echo '</tr>';
 			
 			}
@@ -68,9 +58,7 @@
 			</table>';
 	
 	
-			
-	
-	
+		
 	
 	
 	
@@ -128,7 +116,7 @@
 		<fieldset class="form-group">
 			<a href="index.php"><input type="submit" align="center" class="btn btn-lg btn-danger" name="logout" value="Logout" ></a>
 		</fieldset>
-		<? php echo $error ?>
+		
 	</div>
 	
 
